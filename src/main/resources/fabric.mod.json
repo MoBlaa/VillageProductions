@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "VillageProductions",
+  "id": "villageproductions",
   "version": "${version}",
 
   "name": "Village Productions",
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.villageproductions.Entry"
+      "net.villageproductions.ExampleMod"
     ]
   },
   "mixins": [

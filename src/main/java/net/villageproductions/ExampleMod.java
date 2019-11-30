@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package net.villageproductions;
 
 import net.fabricmc.api.ModInitializer;
 
