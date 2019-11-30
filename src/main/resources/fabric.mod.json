@@ -1,29 +1,29 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "VillageProductions",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Village Productions",
+  "description": "A Minecraft Mod immersively integrating the functionalities of automation into Villages!",
   "authors": [
-    "Me!"
+    "Mo_Blaa"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/MoBlaa",
+    "sources": "https://github.com/MoBlaa/VillageProductions"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/VillageProductions/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.villageproductions.Entry"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "villageproductions.mixins.json"
   ],
 
   "depends": {
