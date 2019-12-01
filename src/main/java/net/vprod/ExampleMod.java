@@ -1,4 +1,4 @@
-package net.villageproductions;
+package net.vprod;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
@@ -12,7 +12,7 @@ import net.minecraft.util.registry.Registry;
 
 public class ExampleMod implements ModInitializer {
 
-    public static final String MOD_IDENTIFIER = "villageproductions";
+    public static final String MOD_IDENTIFIER = "vprod";
 
     // Management Block for a village
     public static final String WHITEBOARD_BLOCK_ID = "whiteboard_block";

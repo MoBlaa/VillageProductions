@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "villageproductions",
+  "id": "vprod",
   "version": "${version}",
 
   "name": "Village Productions",
@@ -14,16 +14,16 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/villageproductions/icon.png",
+  "icon": "assets/vprod/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.villageproductions.ExampleMod"
+      "net.vprod.ExampleMod"
     ]
   },
   "mixins": [
-    "villageproductions.mixins.json"
+    "vprod.mixins.json"
   ],
 
   "depends": {

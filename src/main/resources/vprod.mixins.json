@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.villageproductions.mixin",
+  "package": "net.vprod.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],

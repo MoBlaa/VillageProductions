@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "villageproductions:whiteboard_block"
+          "name": "vprod:whiteboard_block"
         }
       ],
       "conditions": [

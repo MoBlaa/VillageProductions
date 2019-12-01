@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "vprod:block/whiteboard_block"
+    }
+  }
+}
