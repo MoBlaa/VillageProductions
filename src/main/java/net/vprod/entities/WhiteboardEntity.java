@@ -23,7 +23,7 @@ public class WhiteboardEntity extends BlockEntity implements ProxiedInventory {
         this.sources = sources;
     }
 
-    // TODO: toTag and fromTag
+    // TODO: toTag and fromTag or use ItemStacks with identifiers
 
     @Override
     public List<Inventory> getSources() {
