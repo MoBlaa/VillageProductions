@@ -1,39 +1,32 @@
 package net.vprod.entities;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.inventory.Inventory;
 import net.vprod.ExampleMod;
-import net.vprod.inventory.ImplementedInventory;
+import net.vprod.inventory.ProxiedInventory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class WhiteboardEntity extends BlockEntity implements ImplementedInventory {
+import java.util.Collections;
+import java.util.List;
+
+public class WhiteboardEntity extends BlockEntity implements ProxiedInventory {
     private static final Logger logger = LogManager.getLogger(WhiteboardEntity.class);
 
-    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
+    private List<Inventory> sources = Collections.emptyList();
 
     public WhiteboardEntity() {
         super(ExampleMod.WHITEBOARD_BLOCK_ENTITY);
     }
 
-    @Override
-    public CompoundTag toTag(CompoundTag compoundTag) {
-        super.toTag(compoundTag);
-
-        return Inventories.toTag(compoundTag, this.items);
+    public void setSources(List<Inventory> sources) {
+        this.sources = sources;
     }
 
-    @Override
-    public void fromTag(CompoundTag compoundTag) {
-        super.fromTag(compoundTag);
-        Inventories.fromTag(compoundTag, this.items);
-    }
+    // TODO: toTag and fromTag
 
     @Override
-    public DefaultedList<ItemStack> getItems() {
-        return items;
+    public List<Inventory> getSources() {
+        return this.sources;
     }
 }

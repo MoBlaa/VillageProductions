@@ -19,9 +19,6 @@ import net.vprod.utility.VillageScanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Map;
-import java.util.stream.Stream;
-
 public class WhiteboardBlock extends Block implements BlockEntityProvider {
     public static final String BLOCK_ID = "whiteboard_block";
 
@@ -33,18 +30,24 @@ public class WhiteboardBlock extends Block implements BlockEntityProvider {
 
     @Override
     public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient() && hand == Hand.MAIN_HAND) {
-            VillageScanner scanner = new VillageScanner(world);
-            scanner.scan(pos);
-            Map<String, Block> blocks = scanner.getFound();
-            Stream<Map.Entry<String, Block>> blockStream = blocks.entrySet().stream()
-                    .filter(entry -> !entry.getKey().equals("minecraft:grass_path") && !entry.getKey().equals("minecraft:smooth_sandstone"));
-            blockStream.forEach((entry) -> {
-                logger.debug(String.format("Found: %s", entry.getValue().toString()));
-            });
-            MinecraftClient.getInstance().openScreen(new WhiteboardScreen(new WhiteboardGui()));
+        WhiteboardEntity entity = (WhiteboardEntity) world.getBlockEntity(pos);
+        if (entity == null) return true;
+        if (world.isClient) {
+            // Open Gui to show entity
+            MinecraftClient.getInstance().openScreen(new WhiteboardScreen(new WhiteboardGui(entity)));
+            return true;
+        } else {
+            // Scan village
+            VillageScanner scanner = this.scanVillage(world, pos);
+            entity.setSources(scanner.getFoundInventories());
+            return true;
         }
-        return super.activate(state, world, pos, player, hand, hit);
+    }
+
+    private VillageScanner scanVillage(World world, BlockPos pos) {
+        VillageScanner scanner = new VillageScanner(world);
+        scanner.scan(pos);
+        return scanner;
     }
 
     @Override

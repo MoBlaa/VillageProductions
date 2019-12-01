@@ -1,6 +1,8 @@
 package net.vprod.utility;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -81,6 +83,7 @@ public class VillageScanner {
 
     private final Map<BlockPos, Boolean> visited = new HashMap<>();
     private final Map<String, Block> found = new HashMap<>();
+    private final List<Inventory> foundInventories = new LinkedList<>();
     private final World world;
 
     public VillageScanner(World world) {
@@ -89,6 +92,10 @@ public class VillageScanner {
 
     public Map<String, Block> getFound() {
         return Collections.unmodifiableMap(this.found);
+    }
+
+    public List<Inventory> getFoundInventories() {
+        return Collections.unmodifiableList(this.foundInventories);
     }
 
     public void scan(BlockPos root) {
@@ -105,7 +112,6 @@ public class VillageScanner {
                     Block block = world.getBlockState(pos).getBlock();
                     String id = Registry.BLOCK.getId(block).toString();
 
-                    //logger.debug(String.format("%s @ x:%d y:%d z:%d", Registry.BLOCK.getId(block), pos.getX(), pos.getY(), pos.getZ()));
 
                     this.visited.put(pos, true);
                     if (VILLAGE_BLOCKS.contains(id) ||
@@ -115,6 +121,12 @@ public class VillageScanner {
                             (world.getBiome(pos) instanceof SnowyTundraBiome && SNOWY_VILLAGE_BLOCKS.contains(id)) ||
                             (world.getBiome(pos) instanceof PlainsBiome && PLAINS_VILLAGE_BLOCKS.contains(id))
                     ) {
+                        logger.debug(String.format("%s @ x:%d y:%d z:%d", Registry.BLOCK.getId(block), pos.getX(), pos.getY(), pos.getZ()));
+                        BlockEntity entity = world.getBlockEntity(pos);
+                        if (entity instanceof Inventory) {
+                            this.foundInventories.add((Inventory) entity);
+                        }
+
                         this.found.put(id, block);
                         scan(pos);
                     }
