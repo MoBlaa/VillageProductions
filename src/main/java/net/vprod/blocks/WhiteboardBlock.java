@@ -15,7 +15,8 @@ import net.vprod.utility.VillageScanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Set;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class WhiteboardBlock extends Block {
     public static final String BLOCK_ID = "whiteboard_block";
@@ -31,10 +32,12 @@ public class WhiteboardBlock extends Block {
         if (world.isClient() && hand == Hand.MAIN_HAND) {
             VillageScanner scanner = new VillageScanner(world);
             scanner.scan(pos);
-            Set<Block> blocks = scanner.getFound();
-            for (Block block : blocks) {
-                logger.debug(String.format("Found: %s", block.toString()));
-            }
+            Map<String, Block> blocks = scanner.getFound();
+            Stream<Map.Entry<String, Block>> blockStream = blocks.entrySet().stream()
+                    .filter(entry -> !entry.getKey().equals("minecraft:grass_path") && !entry.getKey().equals("minecraft:smooth_sandstone"));
+            blockStream.forEach((entry) -> {
+                logger.debug(String.format("Found: %s", entry.getValue().toString()));
+            });
             MinecraftClient.getInstance().openScreen(new WhiteboardScreen(new WhiteboardGui()));
         }
         return super.activate(state, world, pos, player, hand, hit);

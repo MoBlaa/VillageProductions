@@ -80,15 +80,15 @@ public class VillageScanner {
     public static final int SEARCH_RADIUS = 10; // in Blocks
 
     private final Map<BlockPos, Boolean> visited = new HashMap<>();
-    private final Set<Block> found = new HashSet<>();
+    private final Map<String, Block> found = new HashMap<>();
     private final World world;
 
     public VillageScanner(World world) {
         this.world = world;
     }
 
-    public Set<Block> getFound() {
-        return Collections.unmodifiableSet(this.found);
+    public Map<String, Block> getFound() {
+        return Collections.unmodifiableMap(this.found);
     }
 
     public void scan(BlockPos root) {
@@ -115,7 +115,7 @@ public class VillageScanner {
                             (world.getBiome(pos) instanceof SnowyTundraBiome && SNOWY_VILLAGE_BLOCKS.contains(id)) ||
                             (world.getBiome(pos) instanceof PlainsBiome && PLAINS_VILLAGE_BLOCKS.contains(id))
                     ) {
-                        this.found.add(block);
+                        this.found.put(id, block);
                         scan(pos);
                     }
                 }
