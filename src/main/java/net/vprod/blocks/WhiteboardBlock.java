@@ -11,8 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.vprod.screens.WhiteboardGui;
 import net.vprod.screens.WhiteboardScreen;
+import net.vprod.utility.VillageScanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Set;
 
 public class WhiteboardBlock extends Block {
     public static final String BLOCK_ID = "whiteboard_block";
@@ -25,7 +28,13 @@ public class WhiteboardBlock extends Block {
 
     @Override
     public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient()) {
+        if (world.isClient() && hand == Hand.MAIN_HAND) {
+            VillageScanner scanner = new VillageScanner(world);
+            scanner.scan(pos);
+            Set<Block> blocks = scanner.getFound();
+            for (Block block : blocks) {
+                logger.debug(String.format("Found: %s", block.toString()));
+            }
             MinecraftClient.getInstance().openScreen(new WhiteboardScreen(new WhiteboardGui()));
         }
         return super.activate(state, world, pos, player, hand, hit);
