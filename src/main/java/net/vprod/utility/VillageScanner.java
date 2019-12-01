@@ -34,7 +34,26 @@ public class VillageScanner {
 
             "minecraft:bell", // Marks a town
             "minecraft:chest", // For Storage
-            "minecraft:crafting_table" // For autocrafting crafting blocks have to be present
+            "minecraft:crafting_table", // For autocrafting crafting blocks have to be present
+
+            // Beds are also necessary for villagers to spawn
+            "minecraft:white_bed",
+            "minecraft:orange_bed",
+            "minecraft:magenta_bed",
+            "minecraft:light_blue_bed",
+            "minecraft:yellow_bed",
+            "minecraft:lime_bed",
+            "minecraft:pink_bed",
+            "minecraft:gray_bed",
+            "minecraft:light_gray_bed",
+            "minecraft:cyan_bed",
+            "minecraft:purple_bed",
+            "minecraft:blue_bed",
+            "minecraft:brown_bed",
+            "minecraft:green_bed",
+            "minecraft:red_bed",
+            "minecraft:black_bed",
+            "minecraft:bed"
     )));
     // Village specific blocks for a desert village
     public static final Set<String> DESERT_VILLAGE_BLOCKS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
