@@ -1,14 +1,18 @@
 package net.vprod.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.vprod.entities.WhiteboardEntity;
 import net.vprod.screens.WhiteboardGui;
 import net.vprod.screens.WhiteboardScreen;
 import net.vprod.utility.VillageScanner;
@@ -18,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class WhiteboardBlock extends Block {
+public class WhiteboardBlock extends Block implements BlockEntityProvider {
     public static final String BLOCK_ID = "whiteboard_block";
 
     public static final Logger logger = LogManager.getLogger(WhiteboardBlock.class);
@@ -41,5 +45,10 @@ public class WhiteboardBlock extends Block {
             MinecraftClient.getInstance().openScreen(new WhiteboardScreen(new WhiteboardGui()));
         }
         return super.activate(state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(BlockView view) {
+        return new WhiteboardEntity();
     }
 }
