@@ -112,6 +112,8 @@ public interface ProxiedInventory extends Inventory {
                 continue;
             }
 
+            // TODO: On open inventory the slots get updated and overwrite existing content with the one in the players panel
+
             logger.debug(String.format("Trying to set InvStack at slot %d from inventory with size %d", remaining, inventory.getInvSize()));
 
             // Otherwise get inventory at this slot

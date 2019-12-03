@@ -1,16 +1,17 @@
 package net.vprod.blocks;
 
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.vprod.ExampleMod;
 import net.vprod.entities.WhiteboardEntity;
@@ -18,7 +19,7 @@ import net.vprod.utility.VillageScanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class WhiteboardBlock extends Block implements BlockEntityProvider, InventoryProvider {
+public class WhiteboardBlock extends Block implements BlockEntityProvider {
     public static final String BLOCK_ID_STRING = "whiteboard_block";
     public static final Identifier BLOCK_ID = new Identifier(ExampleMod.MOD_IDENTIFIER, BLOCK_ID_STRING);
 
@@ -49,14 +50,5 @@ public class WhiteboardBlock extends Block implements BlockEntityProvider, Inven
     @Override
     public BlockEntity createBlockEntity(BlockView view) {
         return new WhiteboardEntity(this.scanner);
-    }
-
-    @Override
-    public SidedInventory getInventory(BlockState state, IWorld world, BlockPos pos) {
-        BlockEntity entity = world.getBlockEntity(pos);
-        if (entity instanceof WhiteboardEntity) {
-            return (WhiteboardEntity) entity;
-        }
-        return null;
     }
 }
