@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.vprod.ExampleMod"
+    ],
+    "client": [
+      "net.vprod.ExampleMod"
     ]
   },
   "mixins": [
