@@ -1,41 +1,32 @@
 package net.vprod.entities;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
 import net.minecraft.util.math.Direction;
 import net.vprod.ExampleMod;
-import net.vprod.inventory.ImplementedInventory;
+import net.vprod.inventory.ProxiedInventory;
+import net.vprod.utility.VillageScanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class WhiteboardEntity extends BlockEntity implements ImplementedInventory, SidedInventory {
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+public class WhiteboardEntity extends BlockEntity implements ProxiedInventory, SidedInventory {
     private static final Logger logger = LogManager.getLogger(WhiteboardEntity.class);
 
-    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9 * 9, ItemStack.EMPTY);
+    private VillageScanner scanner;
 
     public WhiteboardEntity() {
+        this(new VillageScanner());
+    }
+
+    public WhiteboardEntity(VillageScanner scanner) {
         super(ExampleMod.WHITEBOARD_BLOCK_ENTITY);
-    }
-
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        return this.items;
-    }
-
-    @Override
-    public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
-        Inventories.fromTag(tag, items);
-    }
-
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        Inventories.toTag(tag, items);
-        return super.toTag(tag);
+        this.scanner = scanner;
     }
 
     @Override
@@ -57,5 +48,13 @@ public class WhiteboardEntity extends BlockEntity implements ImplementedInventor
     @Override
     public boolean canExtractInvStack(int slot, ItemStack stack, Direction direction) {
         return true;
+    }
+
+
+    @Override
+    public List<Inventory> getSources() {
+        Collection<Inventory> result = this.scanner.getFoundInventories();
+        //logger.debug(String.format("Fetching sources. Found %d inventories", result.size()));
+        return new LinkedList<>(result);
     }
 }

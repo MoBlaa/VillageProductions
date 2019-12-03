@@ -5,7 +5,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -83,22 +83,25 @@ public class VillageScanner {
 
     private final Map<BlockPos, Boolean> visited = new HashMap<>();
     private final Map<String, Block> found = new HashMap<>();
-    private final List<Inventory> foundInventories = new LinkedList<>();
-    private final World world;
-
-    public VillageScanner(World world) {
-        this.world = world;
-    }
+    private final Set<Inventory> foundInventories = new HashSet<>();
 
     public Map<String, Block> getFound() {
         return Collections.unmodifiableMap(this.found);
     }
 
-    public List<Inventory> getFoundInventories() {
-        return Collections.unmodifiableList(this.foundInventories);
+    public Collection<Inventory> getFoundInventories() {
+        return Collections.unmodifiableSet(this.foundInventories);
     }
 
-    public void scan(BlockPos root) {
+    public void scan(IWorld world, BlockPos root) {
+        // Clear visited to allow rescanning
+        this.visited.clear();
+        this.found.clear();
+        this.foundInventories.clear();
+        this.recursiveScan(world, root);
+    }
+
+    private void recursiveScan(IWorld world, BlockPos root) {
         // Search 21 * 21 * 21 Area for a villager block, chest barrell or other things inside a town
         for (int xOff = -SEARCH_RADIUS; xOff <= SEARCH_RADIUS; xOff++) {
             for (int yOff = -SEARCH_RADIUS; yOff <= SEARCH_RADIUS; yOff++) {
@@ -124,11 +127,13 @@ public class VillageScanner {
                         logger.debug(String.format("%s @ x:%d y:%d z:%d", Registry.BLOCK.getId(block), pos.getX(), pos.getY(), pos.getZ()));
                         BlockEntity entity = world.getBlockEntity(pos);
                         if (entity instanceof Inventory) {
-                            this.foundInventories.add((Inventory) entity);
+                            Inventory inv = (Inventory) entity;
+                            logger.debug("Found inventory {}", inv);
+                            this.foundInventories.add(inv);
                         }
 
                         this.found.put(id, block);
-                        scan(pos);
+                        recursiveScan(world, pos);
                     }
                 }
             }

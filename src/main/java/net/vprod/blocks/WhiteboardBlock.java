@@ -24,13 +24,18 @@ public class WhiteboardBlock extends Block implements BlockEntityProvider, Inven
 
     public static final Logger logger = LogManager.getLogger(WhiteboardBlock.class);
 
+    private VillageScanner scanner;
+
     public WhiteboardBlock() {
         super(Block.Settings.of(Material.METAL).strength(5.0f, 5.0f));
+        this.scanner = new VillageScanner();
     }
 
     @Override
     public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient) return true;
+
+        this.scanner.scan(world, pos);
 
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof WhiteboardEntity) {
@@ -41,22 +46,16 @@ public class WhiteboardBlock extends Block implements BlockEntityProvider, Inven
         return true;
     }
 
-    private VillageScanner scanVillage(World world, BlockPos pos) {
-        VillageScanner scanner = new VillageScanner(world);
-        scanner.scan(pos);
-        return scanner;
-    }
-
     @Override
     public BlockEntity createBlockEntity(BlockView view) {
-        return new WhiteboardEntity();
+        return new WhiteboardEntity(this.scanner);
     }
 
     @Override
     public SidedInventory getInventory(BlockState state, IWorld world, BlockPos pos) {
         BlockEntity entity = world.getBlockEntity(pos);
-        if (entity != null) {
-            return (SidedInventory) entity;
+        if (entity instanceof WhiteboardEntity) {
+            return (WhiteboardEntity) entity;
         }
         return null;
     }
